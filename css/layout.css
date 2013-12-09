@@ -1,0 +1,12 @@
+#rule, #output {
+  width: 800px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  margin-top: 2px;
+
+  text-align: center;
+
+  overflow: auto;
+}

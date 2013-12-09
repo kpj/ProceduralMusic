@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>Dumdidum</title>
+
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+
+    <script src="./api/js/MIDI/AudioDetect.js" type="text/javascript"></script>
+    <script src="./api/js/MIDI/LoadPlugin.js" type="text/javascript"></script>
+    <script src="./api/js/MIDI/Plugin.js" type="text/javascript"></script>
+    <script src="./api/js/MIDI/Player.js" type="text/javascript"></script>
+    <script src="./api/js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
+    <script src="./api/js/Window/DOMLoader.script.js" type="text/javascript"></script>
+
+    <script src="./api/inc/Base64.js" type="text/javascript"></script>
+    <script src="./api/inc/base64binary.js" type="text/javascript"></script>
+
+    <script src="./js/utils.js" type="text/javascript"></script>
+    <script src="./js/ca.js" type="text/javascript"></script>
+    <script src="./js/music.js" type="text/javascript"></script>
+
+    <script>
+      window.onload = function () {
+        // load plugin
+        MIDI.loadPlugin({
+          soundfontUrl: "./api/soundfont/",
+          instrument: "acoustic_grand_piano",
+          callback: playMusic
+        });
+
+        // init rule definer
+        var combs = ["000","001","010","100","110","011","101","111"];
+        for(p in combs) {
+          var inp = document.createElement("input");
+          inp.type = "text";
+          inp.id = combs[p];
+          inp.value = rule[combs[p]];
+
+          var spa = document.createElement("span");
+          spa.innerHTML = combs[p] + ": ";
+
+          document.getElementById("rule").appendChild(spa);
+          document.getElementById("rule").appendChild(inp);
+          document.getElementById("rule").appendChild(document.createElement("br"));
+        }
+        var but = document.createElement("input");
+        but.type = "button";
+        but.value = "Update";
+        but.id = "update_rule"
+        but.addEventListener("click", function() {
+          console.log("Updating rules");
+
+          var eles = document.getElementById("rule").getElementsByTagName("input");
+          for(p in eles) {
+            var cur = eles[p];
+            if(cur.type == "text") {
+              rule[cur.id] = cur.value;
+            }
+          }
+
+          console.log(rule);
+        });
+        document.getElementById("rule").appendChild(but);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="rule">
+      <h3>Rule Definitions</h3>
+    </div>
+    <div id="output">
+      -
+    </div>
+  </body>
+</html>
