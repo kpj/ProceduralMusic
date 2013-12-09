@@ -19,5 +19,6 @@ function playMusic() {
   console.log("Loaded");
   MIDI.setVolume(0, 127);
 
-  window.setInterval(dropThePiano, 700);
+  document.getElementById("playpause").disabled = false;
+  document.getElementById("output").innerHTML = band.join("");
 }
