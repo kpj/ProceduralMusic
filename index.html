@@ -64,6 +64,13 @@
         });
         document.getElementById("rule").appendChild(but);
 
+        // custom velocity
+        var velo = document.createElement("input");
+        velo.type = "text";
+        velo.id = "velocity";
+        velo.value = "700";
+        document.getElementById("rule").appendChild(velo);
+
         // play/pause button
         var but2 = document.createElement("input");
         but2.type = "button";
@@ -72,7 +79,7 @@
         but2.id = "playpause";
         but2.addEventListener("click", function() {
             if(playerInterval === undefined) {
-              playerInterval = window.setInterval(dropThePiano, 700);
+              playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
               } else {
                 window.clearInterval(playerInterval);
                 playerInterval = undefined;
