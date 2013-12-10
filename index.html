@@ -90,6 +90,27 @@
           }
         });
         document.getElementById("rule").appendChild(but2);
+
+        document.getElementById("rule").appendChild(document.createElement("br"));
+
+        // select method
+        var sel = document.createElement("select");
+        sel.id = "method_select";
+        for(var key in caTranslator) {
+          var op = document.createElement("option");
+          op.value = key;
+          op.innerHTML = key;
+          if(key == transType) {
+            op.selected = true;
+          }
+          sel.appendChild(op);
+        }
+        document.getElementById("rule").appendChild(sel);
+        document.getElementById("method_select").addEventListener("change", function() {
+          var type = document.getElementById("method_select").value;
+          transType = type;
+          console.log("Setting playback type to: " + type);
+        });
       }
     </script>
   </head>
