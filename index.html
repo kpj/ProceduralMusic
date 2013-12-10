@@ -70,6 +70,10 @@
         velo.id = "velocity";
         velo.value = "700";
         document.getElementById("rule").appendChild(velo);
+        velo.addEventListener("change", function() {
+          window.clearInterval(playerInterval);
+          playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
+        });
 
         // play/pause button
         var but2 = document.createElement("input");
@@ -78,12 +82,12 @@
         but2.disabled = true;
         but2.id = "playpause";
         but2.addEventListener("click", function() {
-            if(playerInterval === undefined) {
-              playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
-              } else {
-                window.clearInterval(playerInterval);
-                playerInterval = undefined;
-              }
+          if(playerInterval === undefined) {
+            playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
+          } else {
+            window.clearInterval(playerInterval);
+            playerInterval = undefined;
+          }
         });
         document.getElementById("rule").appendChild(but2);
       }
