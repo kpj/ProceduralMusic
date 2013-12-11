@@ -92,4 +92,24 @@ window.onload = function () {
     transType = type;
     console.log("Setting playback type to: " + type);
   });
+
+  // edit mode
+  document.getElementById("output").addEventListener("dblclick", function() {
+    if(playerInterval !== undefined)
+      return;
+
+    var tmp = document.getElementById("output").innerHTML;
+    var text = document.createElement("input");
+    text.type = "text";
+    text.value = tmp;
+    text.size = tmp.length;
+
+    text.addEventListener("change", function() {
+      band = text.value.split("");
+      document.getElementById("output").innerHTML = text.value;
+    });
+
+    document.getElementById("output").innerHTML = "";
+    document.getElementById("output").appendChild(text);
+  });
 }
