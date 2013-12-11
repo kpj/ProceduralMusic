@@ -71,8 +71,10 @@
         velo.value = "700";
         document.getElementById("rule").appendChild(velo);
         velo.addEventListener("change", function() {
-          window.clearInterval(playerInterval);
-          playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
+          if(playerInterval !== undefined) {
+            window.clearInterval(playerInterval);
+            playerInterval = window.setInterval(dropThePiano, document.getElementById("velocity").value);
+          }
         });
 
         // play/pause button
