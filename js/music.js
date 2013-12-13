@@ -3,32 +3,25 @@ function playNote(note) {
 }
 
 // holds various methods to transform the band into music
-var cumulativeState = 0;
-var transType = "cumulative";
 var caTranslator = {
-  "one_count": function(b) {
-    var state = b.filter(function(value) { return value == 1 }).length;
+  "one_count": function(w) {
+    var state = w.band.filter(function(value) { return value == 1 }).length;
     playNote(21 + state);
   },
-  "cumulative": function(b) {
-    cumulativeState = (cumulativeState + listToInt(band)) % 87;
-    playNote(21 + cumulativeState);
+  "cumulative": function(w) {
+    w.cumulativeState = (w.cumulativeState + listToInt(w.band)) % 87;
+    playNote(21 + w.cumulativeState);
   }
 };
-
-function dropThePiano() {
-  console.log(band.join(""));
-  document.getElementById("output").innerHTML = band.join("");
-
-  caTranslator[transType](band);
-
-  nextStep();
-}
 
 function playMusic() {
   console.log("Loaded");
   MIDI.setVolume(0, 127);
 
-  document.getElementById("playpause").disabled = false;
-  document.getElementById("output").innerHTML = band.join("");
+  for(var i in windows) {
+    var w = windows[i];
+
+    document.getElementById("playpause_" + w.id).disabled = false;
+    document.getElementById("output_" + w.id).innerHTML = w.band.join("");
+  }
 }
