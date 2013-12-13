@@ -112,4 +112,7 @@ window.onload = function () {
     document.getElementById("output").innerHTML = "";
     document.getElementById("output").appendChild(text);
   });
+
+  // windows
+  $(".window").draggable();
 }

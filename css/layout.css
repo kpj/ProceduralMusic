@@ -10,10 +10,9 @@
   overflow: auto;
 }
 
-#rule {
-  width: 800px;
-}
+.window {
+  border-style: dashed;
+  border-width: 1px;
 
-#output {
-  width : 100%;
+  display: inline-block;
 }
