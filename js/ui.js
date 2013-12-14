@@ -34,7 +34,7 @@ function myWindow(id) {
     var me = getWindowById(id);
     caTranslator[me.transType](me);
     me.band = nextStep(me.band, me.rule);
-    document.getElementById("output_" + me.id).innerHTML = me.band.join("");
+    $("#" + setId("output", me.id)).html(me.band.join(""));
   }
 }
 
@@ -47,116 +47,122 @@ function createWindow(id, ruleDict, me) {
   var rule = document.createElement("div");
   var output = document.createElement("div");
 
-  w.className = "window";
-  output.id = setId("output", id);
-  output.className = "center";
-  output.innerHTML = "-";
-  rule.className = "center";
-
-  w.appendChild(rule);
-  w.appendChild(output);
+  $(w)
+    .addClass("window")
+    .append(rule)
+    .append(output);
+  $(output)
+    .attr("id", setId("output", id))
+    .addClass("center")
+    .html("-");
+  $(rule).addClass("center");
 
   // init rule definer
   var combs = ["000","001","010","100","110","011","101","111"];
   for(p in combs) {
     var inp = document.createElement("input");
-    inp.type = "text";
-    inp.id = setId(combs[p], id);
-    inp.value = ruleDict[combs[p]];
+    $(inp)
+      .attr("type", "text")
+      .attr("id", setId(combs[p], id))
+      .attr("value", ruleDict[combs[p]]);
 
     var spa = document.createElement("span");
-    spa.innerHTML = combs[p] + ": ";
+    $(spa).html(combs[p] + ": ");
 
-    rule.appendChild(spa);
-    rule.appendChild(inp);
-    rule.appendChild(document.createElement("br"));
+    $(rule)
+      .append(spa)
+      .append(inp)
+      .append(document.createElement("br"));
   }
   var but = document.createElement("input");
-  but.type = "button";
-  but.value = "Update";
-  but.addEventListener("click", function() {
-    console.log("Updating rules for " + getWindowById(id).id);
+  $(but)
+    .attr("type", "button")
+    .val("Update")
+    .on("click", function() {
+      console.log("[" + getWindowById(id).id + "] - Updating rules");
 
-    var eles = rule.getElementsByTagName("input");
-    for(p in eles) {
-      var cur = eles[p];
-      if(cur.type == "text" && cur.id.indexOf(id) != -1) {
-        getWindowById(id).rule[cur.id.split("_")[0]] = cur.value;
-      }
-    }
+      $("input").each(function() {
+        if($(this).attr("type") == "text" && $(this).attr("id").split("_")[1] == id) {
+          getWindowById(id).rule[$(this).attr("id").split("_")[0]] = $(this).val();
+        }
+      });
 
-    console.log(getWindowById(id).rule);
-  });
-  rule.appendChild(but);
+      console.log(getWindowById(id).rule);
+    });
+  $(rule).append(but);
 
   // custom velocity
   var velo = document.createElement("input");
-  velo.type = "text";
-  velo.id = setId("velocity", id);
-  velo.value = "700";
-  rule.appendChild(velo);
-  velo.addEventListener("change", function() {
-    if(me.interval !== undefined) {
-      window.clearInterval(me.interval);
-      me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
-    }
-  });
+  $(velo)
+    .attr("type", "text")
+    .attr("id", setId("velocity", id))
+    .val("700")
+    .on("change", function() {
+      if(me.interval !== undefined) {
+        window.clearInterval(me.interval);
+        me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
+      }
+    });
+  $(rule).append(velo);
 
   // play/pause button
   var but2 = document.createElement("input");
-  but2.type = "button";
-  but2.value = "Play/Pause";
-  but2.disabled = true;
-  but2.id = setId("playpause", id);
-  but2.addEventListener("click", function() {
-    if(me.interval === undefined) {
-      me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
-    } else {
-      window.clearInterval(me.interval);
-      me.interval = undefined;
-    }
-  });
-  rule.appendChild(but2);
+  $(but2)
+    .attr("type", "button")
+    .val("Play/Pause")
+    .attr("disabled", true)
+    .attr("id", setId("playpause", id))
+    .on("click", function() {
+      if(me.interval === undefined) {
+        me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
+      } else {
+        window.clearInterval(me.interval);
+        me.interval = undefined;
+      }
+    });
+  $(rule).append(but2);
 
-  rule.appendChild(document.createElement("br"));
+  $(rule).append(document.createElement("br"));
 
   // select method
   var sel = document.createElement("select");
-  sel.id = setId("method_select", id);
+  $(sel).attr("id", setId("method_select", id));
   for(var key in caTranslator) {
     var op = document.createElement("option");
-    op.value = key;
-    op.innerHTML = key;
+    $(op)
+      .val(key)
+      .html(key);
     if(key == me.transType) {
-      op.selected = true;
+      $(op).attr("selected", true);
     }
-    sel.appendChild(op);
+    $(sel).append(op);
   }
-  rule.appendChild(sel);
-  sel.addEventListener("change", function() {
-    var type = document.getElementById(setId("method_select", id)).value;
+  $(rule).append(sel);
+  $(sel).on("change", function() {
+    var type = $("#" + setId("method_select", id)).val();
     me.transType = type;
-    console.log("Setting playback type to: " + type);
+    console.log("[" + getWindowById(id).id + "] - Setting playback type to: " + type);
   });
 
   // edit mode
-  output.addEventListener("dblclick", function() {
+  $(output).on("dblclick", function() {
     if(me.interval !== undefined)
       return;
 
-    var tmp = document.getElementById(setId("output", id)).innerHTML;
+    var tmp = $("#" + setId("output", id)).html();
     var text = document.createElement("input");
-    text.type = "text";
-    text.value = tmp;
-    text.size = tmp.length;
+    $(text)
+      .attr("type", "text")
+      .val(tmp)
+      .attr("size", tmp.length);
 
-    text.addEventListener("change", function() {
+    $(text).on("change", function() {
       me.band = text.value.split("");
-      document.getElementById(setId("output", id)).innerHTML = text.value;
+      $("#" + setId("output", id)).html(text.value);
     });
 
-    document.getElementById(setId("output", id)).innerHTML = "";
-    document.getElementById(setId("output", id)).appendChild(text);
+    $("#" + setId("output", id)).html("");
+    $("#" + setId("output", id)).append(text);
   });
 
   return w;
