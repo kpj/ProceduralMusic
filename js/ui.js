@@ -29,13 +29,13 @@ function myWindow(id) {
   }
 
   this.html = createWindow(this.id, this.rule, this);
+}
 
-  this.next = function() {
-    var me = getWindowById(id);
+myWindow.prototype.next = function() {
+    var me = getWindowById(this.id);
     caTranslator[me.transType](me);
     me.band = nextStep(me.band, me.rule);
     $("#" + setId("output", me.id)).html(me.band.join(""));
-  }
 }
 
 function setId(name, id) {
@@ -100,7 +100,7 @@ function createWindow(id, ruleDict, me) {
     .on("change", function() {
       if(me.interval !== undefined) {
         window.clearInterval(me.interval);
-        me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
+        me.interval = window.setInterval(function() { me.next() }, document.getElementById(setId("velocity", id)).value);
       }
     });
   $(rule).append(velo);
@@ -114,7 +114,7 @@ function createWindow(id, ruleDict, me) {
     .attr("id", setId("playpause", id))
     .on("click", function() {
       if(me.interval === undefined) {
-        me.interval = window.setInterval(me.next, document.getElementById(setId("velocity", id)).value);
+        me.interval = window.setInterval(function() { me.next() }, document.getElementById(setId("velocity", id)).value);
       } else {
         window.clearInterval(me.interval);
         me.interval = undefined;
