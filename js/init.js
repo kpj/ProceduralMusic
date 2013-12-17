@@ -12,7 +12,7 @@ window.onload = function () {
   for(var i = 0 ; i < 2 ; i++) {
     var w = new myWindow(i);
     windows.push(w);
-    document.body.appendChild(w.html);
+    $("body").append(w.html);
   }
 
   // add window properties

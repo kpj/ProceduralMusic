@@ -21,7 +21,7 @@ function playMusic() {
   for(var i in windows) {
     var w = windows[i];
 
-    document.getElementById("playpause_" + w.id).disabled = false;
-    document.getElementById("output_" + w.id).innerHTML = w.band.join("");
+    $("#playpause_" + w.id).attr("disabled", false);
+    $("#output_" + w.id).html(w.band.join(""));
   }
 }
