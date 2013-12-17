@@ -1,6 +1,5 @@
 function getWindowById(id) {
-  //for(var i in windows) { //do not do this; i will be a string!
-  for(var i=0;i<windows.length;i++){
+  for(var i = 0 ; i < windows.length ; i++) {
     if(windows[i] instanceof myWindow && windows[i].id == id)
       return windows[i];
   }
@@ -41,24 +40,22 @@ myWindow.prototype.next = function() {
     $("#" + setId("output", me.id)).html(me.band.join(""));
 }
 
-myWindow.prototype.close = function(){
-
-  if(typeof this.interval != "undefined"){ //shitcur for checking undefined
+myWindow.prototype.close = function() {
+  if(typeof this.interval != "undefined"){
     window.clearInterval(this.interval);
     this.interval = undefined; 
   }
-  var id = this.id; 
+
+  var id = this.id;
   console.log("["+id+"] - Deleting "); 
 
-  for(var i=0;i<windows.length;i++){
-
-    if(windows[i] instanceof myWindow && windows[i].id == id){
-      $(windows[i].html).remove(); //remove html from page
-      windows[i] = undefined; //delete this window
+  for(var i = 0 ; i < windows.length ; i++){
+    if(windows[i] instanceof myWindow && windows[i].id == id) {
+      $(windows[i].html).remove();
+      windows[i] = undefined;
       return; 
     }
   }
-
 }
 
 function setId(name, id) {
@@ -80,15 +77,16 @@ function createWindow(id, ruleDict, me) {
     .html("-");
   $(rule).addClass("center");
 
-  //remove button
+  // remove button
   $(rule).append(
     $("<button>")
-    .text("Remove Instrument")
-    .click(function(){
-      windows[id].close(); 
-      return false; 
-    }), 
-    document.createElement("br")
+      .text("X")
+      .css("float", "right")
+      .click(function(){
+        windows[id].close(); 
+        return false; 
+      }),
+      document.createElement("br")
   ); 
 
   // instrument selection
@@ -130,10 +128,9 @@ function createWindow(id, ruleDict, me) {
       .append(inp)
       .append(document.createElement("br"));
   }
-  var but = document.createElement("input");
+  var but = $("<button>");
   $(but)
-    .attr("type", "button")
-    .val("Update")
+    .text("Update")
     .on("click", function() {
       console.log("[" + getWindowById(id).id + "] - Updating rules");
 
@@ -162,10 +159,9 @@ function createWindow(id, ruleDict, me) {
   $(rule).append(velo);
 
   // play/pause button
-  var but2 = document.createElement("input");
+  var but2 = $("<button>");
   $(but2)
-    .attr("type", "button")
-    .val("Play/Pause")
+    .text("Play/Pause")
     .attr("disabled", true)
     .attr("id", setId("playpause", id))
     .on("click", function() {

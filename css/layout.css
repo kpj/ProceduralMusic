@@ -16,3 +16,11 @@
 
   display: inline-block;
 }
+
+.options {
+  position:relative;
+  float: right;
+
+  border-style: solid;
+  border-width: 1px;
+}
