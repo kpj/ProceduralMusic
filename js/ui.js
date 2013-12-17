@@ -1,6 +1,7 @@
 function getWindowById(id) {
-  for(var i in windows) {
-    if(windows[i].id == id)
+  //for(var i in windows) { //do not do this; i will be a string!
+  for(var i=0;i<windows.length;i++){
+    if(windows[i] instanceof myWindow && windows[i].id == id)
       return windows[i];
   }
   return null;
@@ -40,6 +41,26 @@ myWindow.prototype.next = function() {
     $("#" + setId("output", me.id)).html(me.band.join(""));
 }
 
+myWindow.prototype.close = function(){
+
+  if(typeof this.interval != "undefined"){ //shitcur for checking undefined
+    window.clearInterval(this.interval);
+    this.interval = undefined; 
+  }
+  var id = this.id; 
+  console.log("["+id+"] - Deleting "); 
+
+  for(var i=0;i<windows.length;i++){
+
+    if(windows[i] instanceof myWindow && windows[i].id == id){
+      $(windows[i].html).remove(); //remove html from page
+      windows[i] = undefined; //delete this window
+      return; 
+    }
+  }
+
+}
+
 function setId(name, id) {
   return name + "_" + id;
 }
@@ -58,6 +79,17 @@ function createWindow(id, ruleDict, me) {
     .addClass("center")
     .html("-");
   $(rule).addClass("center");
+
+  //remove button
+  $(rule).append(
+    $("<button>")
+    .text("Remove Instrument")
+    .click(function(){
+      windows[id].close(); 
+      return false; 
+    }), 
+    document.createElement("br")
+  ); 
 
   // instrument selection
   var isel = document.createElement("select");

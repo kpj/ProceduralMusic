@@ -34,8 +34,12 @@ function playMusic() {
 
   for(var i in windows) {
     var w = windows[i];
+    //it could have been deleted
+    if(w instanceof myWindow ){
+      $("#playpause_" + w.id).attr("disabled", false);
+      $("#output_" + w.id).html(w.band.join(""));
+    }
 
-    $("#playpause_" + w.id).attr("disabled", false);
-    $("#output_" + w.id).html(w.band.join(""));
+    
   }
 }
