@@ -7,12 +7,14 @@ function getWindowById(id) {
 }
 
 function myWindow(id) {
-  this.id = id;
+  this.id = id; // also used as MIDI-channel
 
   this.interval = undefined;
 
   this.band = initBand();
+
   this.transType = "cumulative";
+  this.instrument = "acoustic_grand_piano";
 
   this.cumulativeState = 0;
 
@@ -56,6 +58,28 @@ function createWindow(id, ruleDict, me) {
     .addClass("center")
     .html("-");
   $(rule).addClass("center");
+
+  // instrument selection
+  var isel = document.createElement("select");
+  $(isel).attr("id", setId("instrument_select", id));
+  for(var key in instruments) {
+    var op = document.createElement("option");
+    $(op)
+      .val(key)
+      .html(key);
+    if(key == me.instrument) {
+      $(op).attr("selected", true);
+    }
+    $(isel).append(op);
+  }
+  $(rule).append(isel);
+  $(isel).on("change", function() {
+    var type = $("#" + setId("instrument_select", id)).val();
+    me.instrument = type;
+    console.log("[" + getWindowById(id).id + "] - Setting instrument to: " + type);
+  });
+
+  $(rule).append(document.createElement("br"));
 
   // init rule definer
   var combs = ["000","001","010","100","110","011","101","111"];

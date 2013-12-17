@@ -4,7 +4,7 @@ window.onload = function () {
   // load plugin
   MIDI.loadPlugin({
     soundfontUrl: "./api/soundfont/",
-    instrument: "acoustic_grand_piano",
+    instruments: Object.keys(instruments),
     callback: playMusic
   });
 
