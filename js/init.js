@@ -23,15 +23,24 @@ $(function () {
   });
 
   var addInstrument = function() {
-    var i = windows.length; 
-    var w = new myWindow(i);
-    windows.push(w);
-    $(w.html)
-      .appendTo("body")
-      .draggable(); 
+    for(var i = 0 ; i < windows.length ; i++) {
+      if(windows[i] === undefined) {
+        var w = new myWindow(i);
+        windows[i] = w;
+        $(w.html)
+          .appendTo("body")
+          .draggable();
 
-    musicPlay(); // refresh music stuffs
+        musicPlay(); // refresh music stuffs
+        break;
+      }
+    }
   }
+
+  // init window array
+  var max_window_num = 10;
+  for(var i = 0 ; i < max_window_num ; i++)
+    windows.push(undefined);
 
   // create menu
   var win = $("<div>")
